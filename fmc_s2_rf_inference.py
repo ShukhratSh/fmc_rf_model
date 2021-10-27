@@ -3,9 +3,6 @@
 
 # ### 1.- Download and load the Random Forest model.
 
-# In[2]:
-
-
 # This connection is blocked on the DEA Sandbox, so needs to be downloaded locally and uploaded to Sandbox manually
 #!wget https://drive.google.com/file/d/1jfEEYh6wH25tW0InGPgx8aMXt8Cg-dUh/view?usp=sharing
 
@@ -21,8 +18,6 @@ with open('/g/data/xc0/user/Shukhrat/scripts/sentinel2_fmc-main/rf_fmc.pickle', 
 
 
 # ### 2.- Load DEA data for Namadgi region
-
-# In[2]:
 
 sys.path.append('/g/data/xc0/user/Shukhrat/dea-notebooks/Scripts')
 from dea_datahandling import load_ard
@@ -59,22 +54,15 @@ ds = load_ard(dc=dc, products=['s2a_ard_granule', 's2b_ard_granule'], **query)
 
 # ### 3.- Add NDVI and NDII normalised indices to the dataset
 
-# In[3]:
-
-
 ds['ndvi']=((ds.nbar_nir_1-ds.nbar_red)/(ds.nbar_nir_1+ds.nbar_red))
 ds['ndii']=((ds.nbar_nir_1-ds.nbar_swir_2)/(ds.nbar_nir_1+ds.nbar_swir_2))
 
 
 # ### 4.- Stack and reshape dataset to be compatible with the RF input
 
-# In[4]:
-
-
 refl = ds[['ndvi','ndii','nbar_red','nbar_green','nbar_blue','nbar_nir_1','nbar_nir_2','nbar_swir_2','nbar_swir_3']].to_array().values
 refl_rf = refl.reshape((9,-1)).swapaxes(0,1)
 
-import numpy as np
 refl_rf = np.nan_to_num(refl_rf, copy=False, posinf=np.nan, neginf=np.nan) # Converting infinite values to nans
 
 rf_fmc = rf.predict(refl_rf)
@@ -85,11 +73,8 @@ fmc = rf_fmc.reshape(refl.shape[1:])
 ### 7. Creating FMC xarray dataset
 # extracting coordinates from original data to add to the predicted data
 x = ds.x.values
-print(x)
 y = ds.y.values
-print(y)
 time = ds.time.values
-print(time)
 
 # Creating a xarray dataset
 ds_fmc = xr.Dataset(
@@ -105,7 +90,6 @@ ds_fmc = xr.Dataset(
 )
 
 ### 8. Remove cloud areas from image as they represent false positives
-
 # Create the mask based on "valid" pixels
 clear_mask = make_mask(ds.fmask, fmask="valid")
 
