@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # ### 1.- Download and load the Random Forest model.
 
 # This connection is blocked on the DEA Sandbox, so needs to be downloaded locally and uploaded to Sandbox manually
@@ -15,8 +12,6 @@ import sklearn
 with open('/g/data/xc0/user/Shukhrat/scripts/sentinel2_fmc-main/rf_fmc.pickle', 'rb') as handle:
     rf = pickle.load(handle)
     print(rf)
-
-
 # ### 2.- Load DEA data for Namadgi region
 
 sys.path.append('/g/data/xc0/user/Shukhrat/dea-notebooks/Scripts')
@@ -27,7 +22,6 @@ from datacube.storage.masking import make_mask
 #from datacube.storage.masking import mask_invalid_data
 import xarray as xr
 import numpy as np
-
 
 dc = datacube.Datacube(app='fmc')
 
