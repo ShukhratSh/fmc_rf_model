@@ -196,8 +196,8 @@ def sentinel_timeseries(df, file_path:str, begin:str = None, end:str = None):
         #s2_ds['FMC'] = (['time','y','x'], canvas1)
         #s2_ds['FMC'] = s2_ds['FMC'] * s2_ds.fmask.where(s2_ds.fmask==1,np.NaN)
         clear_mask = make_mask(s2_ds.fmask, fmask='valid')
-		s2_ds['FMC'] = s2_ds['FMC'].where(clear_mask)
-		s2_ds['Forest'] = forest
+	s2_ds['FMC'] = s2_ds['FMC'].where(clear_mask)
+	s2_ds['Forest'] = forest
         s2_ds['Grass'] = grass
         s2_ds['Shrub'] = shrub
         # drop variables not to be saved in netcdf
